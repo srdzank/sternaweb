@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sterna Lite - WebAssembly</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #2b2b2b;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+
+        #qt-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #screen-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        canvas.qt-screen {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            text-align: center;
+            z-index: 1000;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div id="qt-container">
+        <div id="screen-container">
+            <div id="loading">
+                <div class="spinner"></div>
+                <div>Loading Sterna Lite...</div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var Module = {
+            qtContainerElements: [document.getElementById("screen-container")],
+
+            print: function(text) {
+                console.log(text);
+            },
+
+            printErr: function(text) {
+                console.error(text);
+            },
+
+            onRuntimeInitialized: function() {
+                document.getElementById("loading").style.display = "none";
+                console.log("Qt WebAssembly initialized successfully");
+            },
+
+            locateFile: function(path, prefix) {
+                return prefix + path;
+            }
+        };
+    </script>
+
+    <script async type="text/javascript" src="sterna_lite.js"></script>
+</body>
+</html>
